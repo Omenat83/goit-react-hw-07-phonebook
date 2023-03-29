@@ -1,27 +1,27 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Form = styled.form`
-margin-top: 25px;
-width: 60%;
-max-width: 500px;
-padding: 10px 15px 15px 15px;
-border: 1.5px solid black;
-border-radius: 4px;
-`
+  margin-top: 25px;
+  width: 60%;
+  max-width: 500px;
+  padding: 10px 15px 15px 15px;
+  border: 1.5px solid black;
+  border-radius: 4px;
+`;
 
 export const FormItem = styled.div`
-display: flex;
-gap: 3px;
-flex-direction: column;
+  display: flex;
+  gap: 3px;
+  flex-direction: column;
 
-&:not(:first-child) {
+  &:not(:first-child) {
     margin-top: 20px;
-}
-`
+  }
+`;
 
 export const FormLabel = styled.label`
-font-size: 26px;
-`
+  font-size: 26px;
+`;
 
 export const FormInput = styled.input`
   width: 40%;
@@ -35,7 +35,6 @@ export const FormInput = styled.input`
     border-color: rgba(43, 153, 126, 0.72);
     box-shadow: 0px 0px 5px 2px rgba(43, 153, 126, 0.72);
   }
-
 `;
 
 export const FormButton = styled.button`

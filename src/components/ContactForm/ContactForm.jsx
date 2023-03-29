@@ -6,7 +6,7 @@ import {
   FormInput,
   FormButton,
 } from './ContactForm.styled';
-
+import PropTypes from 'prop-types';
 export class ContactForm extends Component {
   state = {
     name: '',
@@ -17,18 +17,27 @@ export class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
- 
-
   onSubmit = e => {
     e.preventDefault();
-    this.props.createContact({
-      name: this.state.name,
-      number: this.state.number,
-    });
-    this.setState({
-      name: '',
-      number: '',
-    });
+    console.log(this.props.contacts);
+    const newName = this.state.name.toLocaleLowerCase();
+
+    if (
+      this.props.contacts.some(contact => {
+        return contact.name.toLowerCase() === newName;
+      })
+    ) {
+      alert(`${newName} is already in contact`);
+    } else {
+      this.props.createContact({
+        name: this.state.name,
+        number: this.state.number,
+      });
+      this.setState({
+        name: '',
+        number: '',
+      });
+    }
   };
 
   render() {
@@ -65,3 +74,14 @@ export class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  createContact: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }).isRequired
+  ),
+};
