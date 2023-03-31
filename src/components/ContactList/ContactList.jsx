@@ -6,19 +6,15 @@ export const ContactList = ({ contacts, filter, deleteContact }) => {
   return (
     <List>
       {contacts.map(contact => {
-        if (contact.name.toLowerCase().includes(filter.toLowerCase())) {
-          return (
-            <ContactListItem
-              key={contact.id}
-              id={contact.id}
-              name={contact.name}
-              number={contact.number}
-              deleteContact={deleteContact}
-            />
-          );
-        } else {
-          return <></>;
-        }
+        return (
+          <ContactListItem
+            key={contact.id}
+            id={contact.id}
+            name={contact.name}
+            number={contact.number}
+            deleteContact={deleteContact}
+          />
+        );
       })}
     </List>
   );
@@ -32,6 +28,5 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     }).isRequired
   ),
-  filter: PropTypes.string.isRequired,
   deleteContact: PropTypes.func.isRequired,
 };
