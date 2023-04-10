@@ -7,7 +7,7 @@ import { Container, Title, TitleContact } from './App.styled';
 
 export default function App() {
 
-  const [contacts, setContacts] = useState(() => { return JSON.parse(window.localStorage.getItem('contacts')) ?? '' });
+  const [contacts, setContacts] = useState(() => { return JSON.parse(window.localStorage.getItem('contacts')) ?? [] });
   const [filter, setFilter] = useState('');
 
   // перезапис в local storage даних при зміні стейту
