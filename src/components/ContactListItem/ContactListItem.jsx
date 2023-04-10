@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { ListItem, Button } from './ContactListItem.styled';
 
+// відмальовка одного контакту зі списку
 export const ContactListItem = ({ id, name, number, deleteContact }) => {
   return (
     <ListItem key={id}>

@@ -1,70 +1,64 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
-import { ContactForm } from './ContactForm/ContactForm';
+import ContactForm from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { Container, Title, TitleContact } from './App.styled';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+export default function App() {
 
-  createContact = data => {
+  const [contacts, setContacts] = useState(() => { return JSON.parse(window.localStorage.getItem('contacts')) ?? '' });
+  const [filter, setFilter] = useState('');
+
+  // перезапис в local storage даних при зміні стейту
+  useEffect(() => {
+    console.log('перезапис при зміні стейту :>> ');
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  // створюємо новий контакт і додаємо його в стейт
+  const createContact = data => {
     const newContact = {
       id: nanoid(),
       ...data,
     };
 
-    this.setState(prevState => {
-      return {
-        contacts: [...prevState.contacts, newContact],
-      };
+    setContacts(prevContacts => {
+      return [...prevContacts, newContact];
     });
   };
 
-  filterChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+  // слідкуємо за інпутом фільтру
+  const filterChange = ({ target: { value } }) => {
+    setFilter(value);
   };
 
-  filterData = contacts => {
+  // фільтруємо масив контактів по інпуту фільтра
+  const filterData = contacts => {
     const filteredArray = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
     return filteredArray;
   };
 
-  deleteContact = deleteID => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== deleteID),
-    }));
+  // видаляємо контакт по id
+  const deleteContact = deleteID => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== deleteID)
+    );
   };
 
-  render() {
-    return (
-      <Container>
-        <Title>Phonebook</Title>
-        <ContactForm
-          createContact={this.createContact}
-          contacts={this.state.contacts}
-        />
-        <TitleContact>Contacts</TitleContact>
-        <Filter
-          filterChange={this.filterChange}
-          filterValue={this.state.filter}
-        />
-        <ContactList
-          contacts={this.filterData(this.state.contacts)}
-          filter={this.state.filter}
-          deleteContact={this.deleteContact}
-        />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Title>Phonebook</Title>
+      <ContactForm createContact={createContact} contacts={contacts} />
+      <TitleContact>Contacts</TitleContact>
+      <Filter filterChange={filterChange} filterValue={filter} />
+      <ContactList
+        contacts={filterData(contacts)}
+        filter={filter}
+        deleteContact={deleteContact}
+      />
+    </Container>
+  );
 }

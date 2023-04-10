@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   Form,
   FormItem,
@@ -7,72 +7,80 @@ import {
   FormButton,
 } from './ContactForm.styled';
 import PropTypes from 'prop-types';
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export default function ContactForm({ createContact, contacts }) {
+
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+// слідкування за input
+  const inputChange = ({ target: { name, value } }) => {
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        break;
+    }
   };
 
-  inputChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
-
-  onSubmit = e => {
+  // обробка кліку по Add Contact
+  const onSubmit = e => {
     e.preventDefault();
-    console.log(this.props.contacts);
-    const newName = this.state.name.toLocaleLowerCase();
+    const newName = name.toLocaleLowerCase();
 
     if (
-      this.props.contacts.some(contact => {
+      contacts.some(contact => {
         return contact.name.toLowerCase() === newName;
       })
     ) {
       alert(`${newName} is already in contact`);
     } else {
-      this.props.createContact({
-        name: this.state.name,
-        number: this.state.number,
+      createContact({
+        name: name,
+        number: number,
       });
-      this.setState({
-        name: '',
-        number: '',
-      });
+
+      setName('');
+      setNumber('');
     }
   };
 
-  render() {
-    return (
-      <Form onSubmit={this.onSubmit}>
-        <FormItem>
-          <FormLabel htmlFor="inputName">Name</FormLabel>
-          <FormInput
-            id="inputName"
-            type="text"
-            name="name"
-            onChange={this.inputChange}
-            value={this.state.name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-        </FormItem>
-        <FormItem>
-          <FormLabel htmlFor="inputPhone">Phone number</FormLabel>
-          <FormInput
-            id="inputPhone"
-            type="tel"
-            name="number"
-            onChange={this.inputChange}
-            value={this.state.number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-        </FormItem>
-        <FormButton type="submit">Add contact</FormButton>
-      </Form>
-    );
-  }
+  return (
+    <Form onSubmit={onSubmit}>
+      <FormItem>
+        <FormLabel htmlFor="inputName">Name</FormLabel>
+        <FormInput
+          id="inputName"
+          type="text"
+          name="name"
+          onChange={inputChange}
+          value={name}
+          pattern="^[a-zA-Za-яА-Я]+(([' -][a-zA-Za-яА-Я ])?[a-zA-Za-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+        />
+      </FormItem>
+      <FormItem>
+        <FormLabel htmlFor="inputPhone">Phone number</FormLabel>
+        <FormInput
+          id="inputPhone"
+          type="tel"
+          name="number"
+          onChange={inputChange}
+          value={number}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        />
+      </FormItem>
+      <FormButton type="submit">Add contact</FormButton>
+    </Form>
+  );
 }
 
 ContactForm.propTypes = {

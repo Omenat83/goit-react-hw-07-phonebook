@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import { ContactListItem } from 'components/ContactListItem/ContactListItem';
 import { List } from './ContactList.styled';
 
-export const ContactList = ({ contacts, filter, deleteContact }) => {
+// відмальовка списку контактів
+export const ContactList = ({ contacts, deleteContact }) => {
   return (
     <List>
       {contacts.map(contact => {
