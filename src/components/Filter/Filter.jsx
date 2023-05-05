@@ -1,7 +1,16 @@
-import PropTypes from 'prop-types';
+import { setFilter } from 'Redux/filterSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import { FilterLabel, FilterInput } from './Filter.styled';
 
-export const Filter = ({ filterChange, filterValue }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+  const filterValue = useSelector(state => state.filter);
+
+  // слідкуємо за інпутом фільтру
+  const filterChange = ({ target: { value } }) => {
+    dispatch(setFilter(value));
+  };
+
   return (
     <div>
       <FilterLabel>
@@ -16,9 +25,4 @@ export const Filter = ({ filterChange, filterValue }) => {
       </FilterLabel>
     </div>
   );
-};
-
-Filter.propTypes = {
-  filterChange: PropTypes.func.isRequired,
-  filterValue: PropTypes.string.isRequired,
 };

@@ -3,7 +3,8 @@ import { ContactListItem } from 'components/ContactListItem/ContactListItem';
 import { List } from './ContactList.styled';
 
 // відмальовка списку контактів
-export const ContactList = ({ contacts, deleteContact }) => {
+export const ContactList = ({ contacts }) => {
+
   return (
     <List>
       {contacts.map(contact => {
@@ -13,7 +14,6 @@ export const ContactList = ({ contacts, deleteContact }) => {
             id={contact.id}
             name={contact.name}
             number={contact.number}
-            deleteContact={deleteContact}
           />
         );
       })}
@@ -29,5 +29,4 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired,
     }).isRequired
   ),
-  deleteContact: PropTypes.func.isRequired,
 };
