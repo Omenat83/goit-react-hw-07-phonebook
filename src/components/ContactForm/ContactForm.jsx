@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'Redux/contactsSlice';
-import { nanoid } from 'nanoid';
+import { addContactsThunk } from 'Redux/thunks';
+import { getAllContacts } from '../../Redux/selectors';
 import {
   Form,
   FormItem,
@@ -9,16 +9,16 @@ import {
   FormInput,
   FormButton,
 } from './ContactForm.styled';
+import { toast } from 'react-hot-toast';
 
 export default function ContactForm() {
-
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getAllContacts);
 
-// слідкування за input
+  // слідкування за input
   const inputChange = ({ target: { name, value } }) => {
     switch (name) {
       case 'name':
@@ -44,14 +44,13 @@ export default function ContactForm() {
         return contact.name.toLowerCase() === newName;
       })
     ) {
-      alert(`${newName} is already in contact`);
+      toast.error(`${newName} is already in contacts`);
     } else {
       const newContact = {
-        id: nanoid(),
         name: name,
-        number: number,
+        phone: number,
       };
-      dispatch(addContact(newContact));
+      dispatch(addContactsThunk(newContact));
 
       setName('');
       setNumber('');
@@ -90,4 +89,3 @@ export default function ContactForm() {
     </Form>
   );
 }
-
